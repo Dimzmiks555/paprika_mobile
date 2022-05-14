@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './src/screens/Home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 
 
 
@@ -28,7 +30,8 @@ function BottomTabNavigator() {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 65
+          height: 80,
+          marginBottom: -10
         }
       }}
       
@@ -106,8 +109,10 @@ function HomeStackNavigator() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <HomeStackNavigator/>
-    </NavigationContainer>
+    <SafeAreaProvider>   
+      <NavigationContainer>
+        <HomeStackNavigator/>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
