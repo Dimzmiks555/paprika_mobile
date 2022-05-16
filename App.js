@@ -4,6 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './src/screens/Home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import HomeIcon from './assets/icons/homeIcon';
+import CartIcon from './assets/icons/cartIcon';
+import OrderIcon from './assets/icons/orderIcon';
+import UserIcon from './assets/icons/userIcon';
+import CartScreen from './src/screens/Cart';
 
 
 
@@ -43,24 +48,18 @@ function BottomTabNavigator() {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({color, size}) => (
-            <Image
-              source={require('./assets/navbar/home.png')}
-              style={{height: 20, width: 20}}
-            />
+            <HomeIcon style={{height: 20, width: 20, fill: '#333'}}/>
           )
         }}
       />
       <Tab.Screen 
         name="Корзина" 
-        component={SettingsScreen} 
+        component={CartScreen} 
         options={{
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({color, size}) => (
-            <Image
-              source={require('./assets/navbar/buy.png')}
-              style={{height: 20, width: 20}}
-            />
+            <CartIcon style={{height: 26, width: 26, fill: '#333'}}/>
           )
         }}/>
       <Tab.Screen 
@@ -70,10 +69,7 @@ function BottomTabNavigator() {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({color, size}) => (
-            <Image
-              source={require('./assets/navbar/orders.png')}
-              style={{height: 20, width: 20}}
-            />
+            <OrderIcon style={{height: 22, width: 22, fill: '#333'}}/>
           )
         }}/>
       <Tab.Screen 
@@ -83,10 +79,7 @@ function BottomTabNavigator() {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({color, size}) => (
-            <Image
-              source={require('./assets/navbar/user.png')}
-              style={{height: 20, width: 20}}
-            />
+            <UserIcon style={{height: 22, width: 22, fill: '#333'}}/>
           )
         }}/>
     </Tab.Navigator>

@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image  } from 'react-native';
 import {useState, useEffect} from 'react'
-
+import Moment from 'moment';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function HomeScreen() {
+
 
 
     const [categories, setCategories] = useState([])
@@ -12,6 +13,18 @@ export default function HomeScreen() {
     const [actualCategory, setActualCategory] = useState(1)
 
     useEffect(() => {
+
+        Moment.updateLocale('en', {
+            longDateFormat : {
+                LT : 'HH:mm',
+                LTS : 'HH:mm:ss',
+                L : 'DD.MM.YYYY',
+                LL : 'D MMMM YYYY',
+                LLL : 'D MMMM YYYY HH:mm',
+                LLLL : 'dddd D MMMM YYYY HH:mm'
+            },
+        })
+        
         fetch(`http://192.168.1.150:8001/category`)
         .then(res => res.json())
         .then(json => {
@@ -19,11 +32,11 @@ export default function HomeScreen() {
             // console.log(json)
         })
 
-        fetch(`http://192.168.1.150:8001/product?category_id=${actualCategory}`)
+        fetch(`http://192.168.1.150:8001/menu-product?date=${Moment().format('L')}&category_id=${actualCategory}`)
         .then(res => res.json())
         .then(json => {
             setProducts(json)
-            // console.log(json)
+            // console.log(Moment().locale('ru').format('L'), Moment.locale())
         })
 
     }, [actualCategory])
@@ -62,6 +75,7 @@ export default function HomeScreen() {
                     {
                         categories.map(item => (
                             <TouchableOpacity
+                                key={item.id}
                                 onPress={e => {setActualCategory(item.id)}}
                                 style={{
                                     backgroundColor: actualCategory == item.id ? '#f80' : '#fff',
@@ -83,7 +97,7 @@ export default function HomeScreen() {
                                     shadowOffset: { width: 0, height: 10},
                                 }}
                             >
-                                <Image source={{uri: `http://192.168.1.150:8001/static/${item?.img}`}} style={{width:50, height: 50, marginBottom: 20}}>
+                                <Image source={{uri: `http://192.168.1.150:8001/static/${item?.img}` + '?' + new Date()}} style={{width:50, height: 50, marginBottom: 20}}>
 
                                 </Image>
                                 <Text style={{
@@ -98,6 +112,7 @@ export default function HomeScreen() {
                 {
                     products.map(item => (
                         <View
+                            key={item.id}
                             style={{
                                 
                                 backgroundColor: '#fff',
@@ -119,13 +134,13 @@ export default function HomeScreen() {
                                 flexDirection: 'row',
                                 width: '100%'
                             }}>
-                                <Image source={{uri: `http://192.168.1.150:8001/static/${item?.img}`}}  style={{width: '100%', height: 100, resizeMode: 'contain', marginBottom: 20}}></Image>
+                                <Image source={{uri: `http://192.168.1.150:8001/static/${item?.product?.img}` + '?' + new Date()}}  style={{width: '100%', height: 100, resizeMode: 'contain', marginBottom: 20}}></Image>
                             </View>
                             <Text style={{
                                 fontSize: 14,
                                 paddingBottom: 10
                             }}>
-                                {item?.title}
+                                {item?.product?.title}
                             </Text>
                             <View style={{
                                 flexDirection: 'row',
@@ -137,7 +152,7 @@ export default function HomeScreen() {
                                 <Text style={{
                                     fontSize: 32,
                                 }}>
-                                    {item?.price ? item?.price : 0}<Text style={{fontSize: 22}}>₽</Text> 
+                                    {item?.product?.price ? item?.product?.price : 0}<Text style={{fontSize: 22}}>₽</Text> 
                                 </Text> 
                                 <TouchableOpacity>
                                     <Text style={{
